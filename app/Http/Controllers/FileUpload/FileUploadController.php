@@ -3,16 +3,23 @@
 namespace App\Http\Controllers\FileUpload;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\FileUpload\FileUploadRequest;
 
 class FileUploadController extends Controller
 {
-    public function upload(Request $request)
+    public function upload(FileUploadRequest $request)
     {
-        $request->validate([
-            'files' => 'required|array',
-            'files.*' => 'required|mimes:txt|max:2048',
-        ]);
+        $requestValidated = $request->validated();
+
+        foreach ($requestValidated['files'] as $file) {
+
+        }
+
+
+        // TODO:
+        //  1. Konwersja na docelowy string
+        //  2. Sprawdzenie jaka lista
+        //  3. Generowanie pliku PDF
 
 
 //        $uploadedFiles = [];
