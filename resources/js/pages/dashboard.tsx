@@ -28,17 +28,48 @@ export default function Dashboard() {
         setFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
     };
 
-    const handleUpload = () => {
+    // const handleUpload = () => {
+    //     const formData = new FormData();
+    //     files.forEach(({ file }) => formData.append("files[]", file));
+    //
+    //     // TODO: change endpoint
+    //     router.post("/pdf-generate", formData, {
+    //         onSuccess: () => {
+    //             setFiles([]);
+    //         },
+    //     });
+    // };
+
+    const handleUpload = async () => {
         const formData = new FormData();
+        files.forEach(({ file }) => formData.append("files[]", file));
 
-        files.forEach(({file}) => formData.append("files[]", file));
+        try {
+            const response = await fetch(route('pdf.generate'), {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                },
+            });
 
-        // TODO: change endpoint
-        router.post("/upload", formData, {
-            onSuccess: () => {
-                setFiles([]);
-            },
-        });
+            if (!response.ok) {
+                throw new Error('Błąd podczas generowania PDF');
+            }
+
+            const blob = await response.blob();
+            const filename = response.headers.get('Content-Disposition')?.split('filename=')[1]?.replace(/"/g, '') || 'plik.pdf';
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+            URL.revokeObjectURL(link.href);
+
+            setFiles([]);
+        } catch (error) {
+            console.error('Błąd przy uploadzie:', error);
+        }
     };
 
     return (
