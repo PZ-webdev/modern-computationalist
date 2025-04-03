@@ -54,7 +54,10 @@ export default function Password() {
 
             <SettingsLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Zaktualizuj hasło" description="Upewnij się, że Twoje konto używa długiego, losowego hasła, aby zachować bezpieczeństwo." />
+                    <HeadingSmall
+                        title="Zaktualizuj hasło"
+                        description="Upewnij się, że Twoje konto używa długiego, losowego hasła, aby zachować bezpieczeństwo."
+                    />
 
                     <form onSubmit={updatePassword} className="space-y-6">
                         <div className="grid gap-2">
