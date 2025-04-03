@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\PDF;
 
 use Dompdf\Dompdf;
 use Illuminate\Http\UploadedFile;
 
-class FlightReportPdfService
+final class FlightReportPdfService
 {
     /**
      * Generate PDF file from txt file.
@@ -39,25 +41,25 @@ class FlightReportPdfService
 
         $text = preg_replace_callback(
             '/\[ESC\]G\[ESC\]W1(.*?)(\[ESC\]H)?\[ESC\]W0/s',
-            fn($m) => '<h1>' . e(trim($m[1])) . '</h1>',
+            fn ($m) => '<h1>'.e(trim($m[1])).'</h1>',
             $text
         );
 
         $text = preg_replace_callback(
             '/\[ESC\]G\[ESC\]W1(.*?)\[ESC\]W0/s',
-            fn($m) => '<h2>' . e(trim($m[1])) . '</h2>',
+            fn ($m) => '<h2>'.e(trim($m[1])).'</h2>',
             $text
         );
 
         $text = preg_replace_callback(
             '/\[ESC\]36(.*?)\[ESC\]H/s',
-            fn($m) => '<h3>' . e(trim($m[1])) . '</h3>',
+            fn ($m) => '<h3>'.e(trim($m[1])).'</h3>',
             $text
         );
 
         $text = str_replace("\f", '<div class="page-break"></div>', $text);
         $text = str_replace('[ESC]', '', $text);
-        $text = str_replace(["\r\n", "\n", "\r"], "<br />", $text);
+        $text = str_replace(["\r\n", "\n", "\r"], '<br />', $text);
 
         return $text;
     }
@@ -78,6 +80,6 @@ class FlightReportPdfService
             </div>
         HTML;
 
-        return $centered . '<div class="page-break"></div>' . $parts[1];
+        return $centered.'<div class="page-break"></div>'.$parts[1];
     }
 }

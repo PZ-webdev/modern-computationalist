@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\PDFGenerator;
 
 use App\Http\Controllers\Controller;
@@ -7,7 +9,7 @@ use App\Http\Requests\FileUpload\FileUploadRequest;
 use App\Services\PDF\FlightReportPdfService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class PDFGeneratorController extends Controller
+final class PDFGeneratorController extends Controller
 {
     /**
      * Generate PDF file from txt files.
@@ -18,8 +20,8 @@ class PDFGeneratorController extends Controller
 
         $pdfContent = $service->generateFromFile($file);
 
-        $filename = sprintf("%s.pdf", pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+        $filename = sprintf('%s.pdf', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
 
-        return response()->streamDownload(fn() => print($pdfContent), $filename);
+        return response()->streamDownload(fn () => print ($pdfContent), $filename);
     }
 }

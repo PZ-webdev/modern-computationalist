@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\FileUpload;
 
-use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class FileUploadRequest extends FormRequest
+final class FileUploadRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -18,7 +18,7 @@ class FileUploadRequest extends FormRequest
     {
         return [
             'files' => ['required', 'array'],
-            'files.*' => ['required', 'max:2048'] // 2MB,
+            'files.*' => ['required', 'max:2048'], // 2MB,
         ];
     }
 }
