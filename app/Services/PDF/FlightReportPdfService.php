@@ -24,7 +24,9 @@ final class FlightReportPdfService
         // Debug html file
         // file_put_contents(storage_path('app/debug.html'), $htmlReady);
 
-        $html = view('pdf.branch', ['content' => $htmlReady])->render();
+        $html = view('pdf.branch', [
+            'content' => $htmlReady
+        ])->render();
 
         $dompdf = new Dompdf();
         $dompdf->setPaper('A4', 'portrait');
@@ -38,6 +40,7 @@ final class FlightReportPdfService
     {
         $text = str_replace("\e", '[ESC]', $text);
         $text = str_replace('[ESC]2', '', $text);
+        $text = str_replace(['<', '>'], ['&lt;', '&gt;'], $text);
 
         $text = preg_replace_callback(
             '/\[ESC\]G\[ESC\]W1(.*?)(\[ESC\]H)?\[ESC\]W0/s',
